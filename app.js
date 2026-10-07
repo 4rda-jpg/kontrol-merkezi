@@ -93,7 +93,7 @@ const sparks = {
 const state = {
   broker: "wait",      // sunucu bağlantısı: wait / on / off
   esp: null,           // "online" / "offline"
-  pc: null,            // "online" / "offline"
+  pc: null,            // "online" / "login" (giriş ekranında) / "offline"
   waking: false,
   info: null,
   stats: null,
@@ -107,7 +107,7 @@ function renderLinks() {
   const set = (id, cls) => { $(id).className = `link ${cls}`; };
   set("#link-broker", state.broker);
   set("#link-esp", state.esp === "online" ? "on" : state.esp === "offline" ? "off" : "wait");
-  set("#link-pc", state.pc === "online" ? "on" : state.pc === "offline" ? "off" : "wait");
+  set("#link-pc", state.pc === "online" ? "on" : state.pc === "offline" ? "off" : "wait");  // login = bekliyor
 }
 
 function renderHero() {
@@ -120,6 +120,10 @@ function renderHero() {
     state.waking = false;
     st = "on"; title = "Bilgisayar açık";
     sub = state.stats ? `${fmtUptime(state.stats.uptime)} süredir açık` : "Veriler alınıyor…";
+  } else if (state.pc === "login") {
+    state.waking = false;
+    st = "login"; title = "Giriş ekranında bekliyor";
+    sub = "Bilgisayar açık, şifreni girince panel bağlanacak";
   } else if (state.waking) {
     st = "waking"; title = "Açılıyor…";
     sub = "Giriş yaptığında panel bağlanacak";
@@ -130,7 +134,7 @@ function renderHero() {
   hero.dataset.state = st;
   $("#hero-title").textContent = title;
   $("#hero-sub").textContent = sub;
-  wake.classList.toggle("hidden", state.broker !== "on" || online);
+  wake.classList.toggle("hidden", state.broker !== "on" || online || state.pc === "login");
   wake.disabled = state.waking || state.esp !== "online";
   $("#online-only").classList.toggle("hidden", !online);
 }
@@ -256,7 +260,8 @@ function onMessage(t, payload) {
     case "pc/status": {
       const was = state.pc;
       state.pc = text;
-      if (text === "online" && was === "offline" && state.waking) toast("✅ Bilgisayar açıldı");
+      if (text === "online" && was !== "online" && (state.waking || was === "login")) toast("✅ Panel bağlandı");
+      if (text === "login" && state.waking) toast("✅ Bilgisayar açıldı, giriş ekranında bekliyor");
       if (text !== "online") { sparks.cpu.reset(); sparks.net.reset(); state.stats = null; }
       else startWatching();
       break;
@@ -301,7 +306,7 @@ document.addEventListener("visibilitychange", () => {
 
 function send(action, value, { quiet = false } = {}) {
   if (!client?.connected || state.pc !== "online") {
-    toast("Bilgisayar çevrimdışı", true);
+    toast(state.pc === "login" ? "Önce bilgisayarda giriş yap" : "Bilgisayar çevrimdışı", true);
     return Promise.resolve(null);
   }
   const id = Math.random().toString(36).slice(2, 9);
