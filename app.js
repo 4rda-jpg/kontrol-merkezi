@@ -136,6 +136,12 @@ function renderHero() {
   wake.classList.toggle("hidden", state.broker !== "on" || online || state.pc === "login");
   wake.disabled = state.waking || state.esp !== "online";
   $("#online-only").classList.toggle("hidden", !online);
+  // Giriş ekranındayken Güç kartı tek başına gösterilir: sadece kapat / yeniden başlat
+  const power = $("#power-card"), atLogin = state.pc === "login" && state.broker === "on";
+  if (atLogin && power.parentElement !== $("#login-power")) $("#login-power").append(power);
+  if (!atLogin && power.parentElement === $("#login-power")) $("#media-card").after(power);
+  $("#login-power").classList.toggle("hidden", !atLogin);
+  $$("#power-card .session-only").forEach((b) => b.classList.toggle("hidden", atLogin));
 }
 
 const render = () => { renderLinks(); renderHero(); };
@@ -329,7 +335,10 @@ document.addEventListener("visibilitychange", () => {
 });
 
 function send(action, value, { quiet = false } = {}) {
-  if (!client?.connected || state.pc !== "online") {
+  // Giriş ekranında güç komutlarını bekçi yapar; iptal ise kapanış başladıktan sonra
+  // ("offline" görünürken) de gönderilebilmeli
+  const allowed = state.pc === "online" || (action === "power" && (state.pc === "login" || value === "cancel"));
+  if (!client?.connected || !allowed) {
     toast(state.pc === "login" ? "Önce bilgisayarda giriş yap" : "Bilgisayar çevrimdışı", true);
     return Promise.resolve(null);
   }

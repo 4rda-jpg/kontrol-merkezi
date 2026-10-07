@@ -98,6 +98,8 @@
       <button class="btn primary wake hidden" id="btn-wake"><svg><use href="#i-power"/></svg>Bilgisayarı Aç</button>
     </section>
 
+    <div id="login-power" class="online hidden"></div>
+
     <div id="online-only" class="online hidden">
       <!-- İstatistikler -->
       <div class="stats">
@@ -152,11 +154,11 @@
       </section>
 
       <!-- Güç işlemleri -->
-      <section class="card">
+      <section class="card" id="power-card">
         <h2 class="card-title"><span class="tile"><svg><use href="#i-power"/></svg></span>Güç</h2>
         <div class="power">
-          <button class="pbtn" data-power="lock"><span class="p-ic"><svg><use href="#i-lock"/></svg></span>Kilitle</button>
-          <button class="pbtn" data-power="sleep"><span class="p-ic"><svg><use href="#i-moon"/></svg></span>Uyku</button>
+          <button class="pbtn session-only" data-power="lock"><span class="p-ic"><svg><use href="#i-lock"/></svg></span>Kilitle</button>
+          <button class="pbtn session-only" data-power="sleep"><span class="p-ic"><svg><use href="#i-moon"/></svg></span>Uyku</button>
           <button class="pbtn" data-power="restart"><span class="p-ic"><svg><use href="#i-restart"/></svg></span>Yeniden başlat</button>
           <button class="pbtn danger" data-power="shutdown"><span class="p-ic"><svg><use href="#i-power"/></svg></span>Kapat</button>
         </div>
