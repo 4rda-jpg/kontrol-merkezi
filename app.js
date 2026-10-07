@@ -76,17 +76,16 @@ class Spark {
       const step = w / (data.length - 1);
       ctx.beginPath();
       data.forEach((v, i) => { const x = i * step, y = h - 2 - (v / max) * (h - 6); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
-      ctx.strokeStyle = this.colors[si]; ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.stroke();
+      ctx.strokeStyle = this.colors[si]; ctx.lineWidth = 1.5; ctx.lineJoin = "round"; ctx.stroke();
       ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
       const g = ctx.createLinearGradient(0, 0, 0, h);
-      g.addColorStop(0, this.colors[si] + "40"); g.addColorStop(1, this.colors[si] + "00");
+      g.addColorStop(0, this.colors[si] + "26"); g.addColorStop(1, this.colors[si] + "00");
       ctx.fillStyle = g; ctx.fill();
     });
   }
 }
 const sparks = {
-  cpu: new Spark($("#cpu-spark"), ["#8b6cff"]),
-  net: new Spark($("#net-spark"), ["#fbbf24", "#8b6cff"], null),
+  net: new Spark($("#net-spark"), ["#9db8ff", "#6b7a99"], null),
 };
 
 // ------------------------------------------------------------------ Durum
@@ -142,25 +141,48 @@ function renderHero() {
 const render = () => { renderLinks(); renderHero(); };
 
 // ------------------------------------------------------------------ Canlı veri
+// Sayıyı eskisinden yenisine akarak değiştirir
+function countTo(el, to) {
+  const from = el._v ?? 0;
+  el._v = to;
+  if (from === to || document.hidden) { el.textContent = to; return; }
+  const t0 = performance.now(), dur = 600;
+  const step = (t) => {
+    const k = Math.min(1, Math.max(0, (t - t0) / dur)), e = 1 - (1 - k) ** 3;
+    el.textContent = Math.round(from + (to - from) * e);
+    if (k < 1 && el._v === to) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// Halka gösterge: yüzdeye göre dolar, çok yüklenince uyarı rengine döner
+const RING = 2 * Math.PI * 42;
+function gauge(name, pct, hot = pct >= 90) {
+  $(`#${name}-ring`).style.strokeDashoffset = RING * (1 - Math.min(100, pct) / 100);
+  countTo($(`#${name}-val`), Math.round(pct));
+  $(`#card-${name}`).classList.toggle("hot", hot);
+}
+
 function renderStats(s) {
   state.stats = s;
-  $("#cpu-val").textContent = Math.round(s.cpu);
-  sparks.cpu.push(s.cpu);
-  $("#mem-val").textContent = Math.round(s.mem);
-  $("#mem-bar").style.width = `${s.mem}%`;
+  gauge("cpu", s.cpu);
+  $("#cpu-sub").textContent = s.procs?.[0] ? `En çok: ${s.procs[0].name.replace(/\.exe$/i, "")}` : "\u00a0";
+  gauge("mem", s.mem);
   $("#mem-sub").textContent = `${fmtBytes(s.mem_used)} / ${fmtBytes(s.mem_total, 0)}`;
   if (s.gpu) {
-    $("#gpu-val").textContent = Math.round(s.gpu.util);
-    $("#gpu-bar").style.width = `${s.gpu.util}%`;
+    gauge("gpu", s.gpu.util, s.gpu.util >= 90 || s.gpu.temp >= 85);
     $("#gpu-sub").textContent = `${Math.round(s.gpu.temp)}°C · ${(s.gpu.mem_used / 1024).toFixed(1)} GB`;
   }
   $("#net-down").textContent = `${fmtBytes(s.down)}/s`;
   $("#net-up").textContent = `${fmtBytes(s.up)}/s`;
+  $(".net-row.down").classList.toggle("active", s.down > 50 * 1024);
+  $(".net-row.up").classList.toggle("active", s.up > 50 * 1024);
   sparks.net.push(s.down, s.up);
   $("#uptime").textContent = `${state.info?.hostname || "Bilgisayar"} · ${fmtUptime(s.uptime)} süredir açık`;
 
   const m = s.media;
   $("#media-card").classList.toggle("idle", !m);
+  $("#media-card").classList.toggle("playing", m?.status === "playing");
   $("#media-title").textContent = m?.title || "Şu an bir şey çalmıyor";
   $("#media-artist").textContent = m ? (m.artist || "Bilinmeyen sanatçı") : "Spotify, YouTube ya da başka bir oynatıcı";
   $("#media-app").textContent = m?.app || "Medya";
@@ -192,12 +214,11 @@ function renderVolume(v) {
   $("#mute-btn").dataset.muted = v.muted ? "1" : "";
 }
 
-const hue = (s) => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 7);
 function renderProcs(procs) {
   $("#procs").innerHTML = procs.map((p) => {
     const name = escapeHtml(p.name.replace(/\.exe$/i, ""));
     return `<div class="proc">
-      <span class="p-ava" style="background:hsl(${hue(p.name)} 55% 42%)">${name[0]?.toUpperCase() || "?"}</span>
+      <span class="p-ava">${name[0]?.toUpperCase() || "?"}</span>
       <div class="p-name"><b>${name}</b><span>${fmtBytes(p.mem)}${p.count > 1 ? ` · ${p.count} pencere/işlem` : ""}</span></div>
       <span class="p-cpu ${p.cpu > 50 ? "hotter" : p.cpu > 15 ? "hot" : ""}">%${p.cpu.toFixed(1)}</span>
       <button class="kill" data-kill="${escapeHtml(p.name)}" ${p.protected ? "disabled" : ""} aria-label="Kapat"><svg><use href="#i-x"/></svg></button>
@@ -206,17 +227,20 @@ function renderProcs(procs) {
 }
 
 const APP_STYLE = {
-  globe: ["#fb7c3c", "#f0503c"], music: ["#2fd566", "#14a34a"], message: ["#7b8cff", "#5865f2"],
-  gamepad: ["#3a8fd6", "#1b4f8a"], code: ["#36a3f2", "#0b6fc4"], folder: ["#fcc94a", "#f59e0b"],
-  activity: ["#2dd4bf", "#0d9488"], calculator: ["#a78bfa", "#7c3aed"],
+  globe: "#ff8a5c", music: "#4ade80", message: "#8b9bff", gamepad: "#9cc4ff",
+  code: "#5eb4ff", folder: "#ffd166", activity: "#5eead4", calculator: "#c4b5fd",
 };
+// Tanınan uygulamalarda gerçek logo ve marka rengi kullanılır
+const BRANDS = { brave: "#ff8a5c", spotify: "#4ade80", discord: "#8b9bff", steam: "#e6ecf5" };
 function renderInfo(info) {
   state.info = info;
   $("#hostname").textContent = info.hostname;
   $("#apps").innerHTML = info.apps.map((a, i) => {
-    const [c1, c2] = APP_STYLE[a.icon] || ["#8b6cff", "#5b3fd9"];
+    const brand = Object.keys(BRANDS).find((k) => a.name.toLowerCase().includes(k));
+    const icon = brand ? `b-${brand}` : `i-${APP_STYLE[a.icon] ? a.icon : "app"}`;
+    const c = brand ? BRANDS[brand] : APP_STYLE[a.icon] || "#e6ecf5";
     return `<button class="app-btn" data-app="${i}" data-name="${escapeHtml(a.name)}">
-      <span class="app-ic" style="--g:linear-gradient(135deg,${c1},${c2});--sh:${c2}"><svg><use href="#i-${APP_STYLE[a.icon] ? a.icon : "app"}"/></svg></span>
+      <span class="app-ic" style="--c:${c}"><svg><use href="#${icon}"/></svg></span>
       <span>${escapeHtml(a.name)}</span></button>`;
   }).join("");
 }
@@ -262,7 +286,7 @@ function onMessage(t, payload) {
       state.pc = text;
       if (text === "online" && was !== "online" && (state.waking || was === "login")) toast("✅ Panel bağlandı");
       if (text === "login" && state.waking) toast("✅ Bilgisayar açıldı, giriş ekranında bekliyor");
-      if (text !== "online") { sparks.cpu.reset(); sparks.net.reset(); state.stats = null; }
+      if (text !== "online") { sparks.net.reset(); state.stats = null; }
       else startWatching();
       break;
     }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-  <meta name="theme-color" content="#0a0c11">
+  <meta name="theme-color" content="#0c0f17">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,12 +15,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- İkon seti (çizgi ikonlar Lucide tarzı, marka logoları Simple Icons / CC0) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
       <symbol id="i-mem" viewBox="0 0 24 24"><path d="M6 19v-3M10 19v-3M14 19v-3M18 19v-3"/><rect x="2" y="6" width="20" height="10" rx="2"/><path d="M7 10h.01M12 10h.01M17 10h.01"/></symbol>
       <symbol id="i-gpu" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="2"/><circle cx="9" cy="12.5" r="2.5"/><circle cx="16" cy="12.5" r="2.5"/><path d="M5 18v3M2 4h3v3"/></symbol>
-      <symbol id="i-net" viewBox="0 0 24 24"><path d="M7 3v14M3 13l4 4 4-4M17 21V7M21 11l-4-4-4 4"/></symbol>
+      <symbol id="i-net" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></symbol>
+      <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
+      <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
       <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" fill="currentColor"/></symbol>
       <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/></symbol>
       <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 4.5v15l10-7.5z" fill="currentColor"/><path d="M19 5v14"/></symbol>
@@ -43,13 +46,17 @@
       <symbol id="i-app" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></symbol>
       <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
       <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></symbol>
-      <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+      <!-- Marka logoları (dolgulu) -->
+      <symbol id="b-spotify" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></symbol>
+      <symbol id="b-discord" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol>
+      <symbol id="b-steam" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></symbol>
+      <symbol id="b-brave" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M15.68 0l2.096 2.38s1.84-.512 2.709.358c.868.87 1.584 1.638 1.584 1.638l-.562 1.381.715 2.047s-2.104 7.98-2.35 8.955c-.486 1.919-.818 2.66-2.198 3.633-1.38.972-3.884 2.66-4.293 2.916-.409.256-.92.692-1.38.692-.46 0-.97-.436-1.38-.692a185.796 185.796 0 01-4.293-2.916c-1.38-.973-1.712-1.714-2.197-3.633-.247-.975-2.351-8.955-2.351-8.955l.715-2.047-.562-1.381s.716-.768 1.585-1.638c.868-.87 2.708-.358 2.708-.358L8.321 0h7.36zm-3.679 14.936c-.14 0-1.038.317-1.758.69-.72.373-1.242.637-1.409.742-.167.104-.065.301.087.409.152.107 2.194 1.69 2.393 1.866.198.175.489.464.687.464.198 0 .49-.29.688-.464.198-.175 2.24-1.759 2.392-1.866.152-.108.254-.305.087-.41-.167-.104-.689-.368-1.41-.741-.72-.373-1.617-.69-1.757-.69zm0-11.278s-.409.001-1.022.206-1.278.46-1.584.46c-.307 0-2.581-.434-2.581-.434S4.119 7.152 4.119 7.849c0 .697.339.881.68 1.243l2.02 2.149c.192.203.59.511.356 1.066-.235.555-.58 1.26-.196 1.977.384.716 1.042 1.194 1.464 1.115.421-.08 1.412-.598 1.776-.834.364-.237 1.518-1.19 1.518-1.554 0-.365-1.193-1.02-1.413-1.168-.22-.15-1.226-.725-1.247-.95-.02-.227-.012-.293.284-.851.297-.559.831-1.304.742-1.8-.089-.495-.95-.753-1.565-.986-.615-.232-1.799-.671-1.947-.74-.148-.068-.11-.133.339-.175.448-.043 1.719-.212 2.292-.052.573.16 1.552.403 1.632.532.079.13.149.134.067.579-.081.445-.5 2.581-.541 2.96-.04.38-.12.63.288.724.409.094 1.097.256 1.333.256s.924-.162 1.333-.256c.408-.093.329-.344.288-.723-.04-.38-.46-2.516-.541-2.961-.082-.445-.012-.45.067-.579.08-.129 1.059-.372 1.632-.532.573-.16 1.845.009 2.292.052.449.042.487.107.339.175-.148.069-1.332.508-1.947.74-.615.233-1.476.49-1.565.986-.09.496.445 1.241.742 1.8.297.558.304.624.284.85-.02.226-1.026.802-1.247.95-.22.15-1.413.804-1.413 1.169 0 .364 1.154 1.317 1.518 1.554.364.236 1.355.755 1.776.834.422.079 1.08-.4 1.464-1.115.384-.716.039-1.422-.195-1.977-.235-.555.163-.863.355-1.066l2.02-2.149c.341-.362.68-.546.68-1.243 0-.697-2.695-3.96-2.695-3.96s-2.274.436-2.58.436c-.307 0-.972-.256-1.585-.461-.613-.205-1.022-.206-1.022-.206z"/></symbol>
     </defs>
   </svg>
 
   <!-- İlk kurulum: postane bilgileri -->
   <section id="setup" class="setup hidden">
-    <form id="setup-form" class="setup-card" autocomplete="on">
+    <form id="setup-form" class="setup-card glass" autocomplete="on">
       <img class="logo" src="icons/icon-192.png" alt="">
       <h1>Kontrol Merkezi</h1>
       <p>Bilgisayarına bağlanmak için EMQX bilgilerini bir kez gir. Sadece bu telefonda saklanır.</p>
@@ -72,13 +79,13 @@
         <p class="greeting" id="greeting">Merhaba</p>
         <h1 id="hostname">Bilgisayarım</h1>
       </div>
-      <button class="icon-btn" id="btn-settings" aria-label="Ayarlar"><svg><use href="#i-gear"/></svg></button>
+      <button class="icon-btn glass" id="btn-settings" aria-label="Ayarlar"><svg><use href="#i-gear"/></svg></button>
     </header>
 
     <div class="links">
-      <span class="link" id="link-broker"><i></i>Sunucu</span>
-      <span class="link" id="link-esp"><i></i>Kumanda</span>
-      <span class="link" id="link-pc"><i></i>Bilgisayar</span>
+      <span class="link glass" id="link-broker"><i></i>Sunucu</span>
+      <span class="link glass" id="link-esp"><i></i>Kumanda</span>
+      <span class="link glass" id="link-pc"><i></i>Bilgisayar</span>
     </div>
 
     <!-- Güç durumu -->
@@ -91,29 +98,30 @@
       <button class="btn primary wake hidden" id="btn-wake"><svg><use href="#i-power"/></svg>Bilgisayarı Aç</button>
     </section>
 
-    <div id="online-only" class="hidden">
+    <div id="online-only" class="online hidden">
       <!-- İstatistikler -->
       <div class="stats">
-        <section class="card stat" data-accent="violet">
-          <div class="stat-head"><svg><use href="#i-cpu"/></svg>İşlemci</div>
-          <div class="big"><span id="cpu-val">0</span><small>%</small></div>
-          <canvas class="spark" id="cpu-spark"></canvas>
+        <section class="card stat" id="card-cpu">
+          <div class="stat-head"><span class="tile"><svg><use href="#i-cpu"/></svg></span>İşlemci</div>
+          <div class="gauge"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/><circle class="val" id="cpu-ring" cx="50" cy="50" r="42"/></svg><div class="gauge-num"><span id="cpu-val">0</span><small>%</small></div></div>
+          <span class="meta" id="cpu-sub">&nbsp;</span>
         </section>
-        <section class="card stat" data-accent="cyan">
-          <div class="stat-head"><svg><use href="#i-mem"/></svg>Bellek</div>
-          <div class="big"><span id="mem-val">0</span><small>%</small></div>
-          <div class="meter"><i id="mem-bar"></i></div>
-          <span class="meta" id="mem-sub"></span>
+        <section class="card stat" id="card-mem">
+          <div class="stat-head"><span class="tile"><svg><use href="#i-mem"/></svg></span>Bellek</div>
+          <div class="gauge"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/><circle class="val" id="mem-ring" cx="50" cy="50" r="42"/></svg><div class="gauge-num"><span id="mem-val">0</span><small>%</small></div></div>
+          <span class="meta" id="mem-sub">&nbsp;</span>
         </section>
-        <section class="card stat" data-accent="green">
-          <div class="stat-head"><svg><use href="#i-gpu"/></svg>Ekran Kartı</div>
-          <div class="big"><span id="gpu-val">—</span><small>%</small></div>
-          <div class="meter"><i id="gpu-bar"></i></div>
-          <span class="meta" id="gpu-sub"></span>
+        <section class="card stat" id="card-gpu">
+          <div class="stat-head"><span class="tile"><svg><use href="#i-gpu"/></svg></span>Ekran Kartı</div>
+          <div class="gauge"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/><circle class="val" id="gpu-ring" cx="50" cy="50" r="42"/></svg><div class="gauge-num"><span id="gpu-val">—</span><small>%</small></div></div>
+          <span class="meta" id="gpu-sub">&nbsp;</span>
         </section>
-        <section class="card stat" data-accent="amber">
-          <div class="stat-head"><svg><use href="#i-net"/></svg>Ağ</div>
-          <div class="net"><span class="down" id="net-down">0 B/s</span><span class="up" id="net-up">0 B/s</span></div>
+        <section class="card stat net-card">
+          <div class="stat-head"><span class="tile"><svg><use href="#i-net"/></svg></span>İnternet</div>
+          <div class="net">
+            <div class="net-row down"><span class="arrow"><svg><use href="#i-arrow-down"/></svg></span><b id="net-down">0 B/s</b></div>
+            <div class="net-row up"><span class="arrow"><svg><use href="#i-arrow-up"/></svg></span><b id="net-up">0 B/s</b></div>
+          </div>
           <canvas class="spark" id="net-spark"></canvas>
         </section>
       </div>
@@ -121,10 +129,11 @@
       <!-- Medya -->
       <section class="card media" id="media-card">
         <div class="media-bg" id="media-bg"></div>
+        <div class="card-title"><span class="tile"><svg><use href="#i-music"/></svg></span>Şimdi Çalıyor
+          <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="media-app" id="media-app">Medya</span></div>
         <div class="media-body">
           <div class="art" id="media-art"><svg><use href="#i-music"/></svg></div>
           <div class="media-info">
-            <span class="media-app" id="media-app">Medya</span>
             <h3 id="media-title">Şu an bir şey çalmıyor</h3>
             <p id="media-artist">—</p>
           </div>
@@ -144,24 +153,24 @@
 
       <!-- Güç işlemleri -->
       <section class="card">
-        <h2 class="card-title"><svg><use href="#i-zap"/></svg>Hızlı İşlemler</h2>
+        <h2 class="card-title"><span class="tile"><svg><use href="#i-power"/></svg></span>Güç</h2>
         <div class="power">
-          <button class="pbtn" data-power="lock"><svg><use href="#i-lock"/></svg>Kilitle</button>
-          <button class="pbtn" data-power="sleep"><svg><use href="#i-moon"/></svg>Uyku</button>
-          <button class="pbtn warn" data-power="restart"><svg><use href="#i-restart"/></svg>Yeniden başlat</button>
-          <button class="pbtn danger" data-power="shutdown"><svg><use href="#i-power"/></svg>Kapat</button>
+          <button class="pbtn" data-power="lock"><span class="p-ic"><svg><use href="#i-lock"/></svg></span>Kilitle</button>
+          <button class="pbtn" data-power="sleep"><span class="p-ic"><svg><use href="#i-moon"/></svg></span>Uyku</button>
+          <button class="pbtn" data-power="restart"><span class="p-ic"><svg><use href="#i-restart"/></svg></span>Yeniden başlat</button>
+          <button class="pbtn danger" data-power="shutdown"><span class="p-ic"><svg><use href="#i-power"/></svg></span>Kapat</button>
         </div>
       </section>
 
       <!-- Uygulamalar -->
       <section class="card">
-        <h2 class="card-title"><svg><use href="#i-app"/></svg>Uygulamaları Aç</h2>
+        <h2 class="card-title"><span class="tile"><svg><use href="#i-app"/></svg></span>Uygulamalar</h2>
         <div class="apps" id="apps"></div>
       </section>
 
       <!-- Süreçler -->
       <section class="card">
-        <h2 class="card-title"><svg><use href="#i-list"/></svg>En Çok Kaynak Kullananlar</h2>
+        <h2 class="card-title"><span class="tile"><svg><use href="#i-list"/></svg></span>En Çok Kaynak Kullananlar</h2>
         <div id="procs" class="procs"></div>
       </section>
 
