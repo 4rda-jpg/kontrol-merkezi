@@ -96,6 +96,8 @@ const state = {
   waking: false,
   info: null,
   stats: null,
+  deck: null,          // Stream Deck sayfaları (bilgisayardan, kalıcı mesaj)
+  view: "main",        // "main" / "deck"
 };
 let client, settings, wakeTimer, watchTimer, artUrl;
 const pending = new Map();  // komut kimliği -> çözücü
@@ -144,7 +146,7 @@ function renderHero() {
   $$("#power-card .session-only").forEach((b) => b.classList.toggle("hidden", atLogin));
 }
 
-const render = () => { renderLinks(); renderHero(); };
+const render = () => { renderLinks(); renderHero(); if (typeof renderDeckBar === "function") renderDeckBar(); };
 
 // ------------------------------------------------------------------ Canlı veri
 // Sayıyı eskisinden yenisine akarak değiştirir
@@ -299,6 +301,7 @@ function onMessage(t, payload) {
     case "esp/status": state.esp = text; break;
     case "pc/info": try { renderInfo(JSON.parse(text)); } catch {} break;
     case "pc/stats": try { renderStats(JSON.parse(text)); } catch {} break;
+    case "pc/deck": try { state.deck = JSON.parse(text); deckChanged(); } catch {} break;
     case "pc/ack": {
       try {
         const a = JSON.parse(text);
@@ -319,11 +322,12 @@ function onMessage(t, payload) {
   render();
 }
 
-// Telefon ekranı açıkken bilgisayara "bakıyorum" der; o da 2 sn'de bir veri gönderir
+// Telefon ekranı açıkken bilgisayara "bakıyorum" der; o da 2 sn'de bir veri gönderir.
+// Deck ekranında canlı veri gösterilmez, bu yüzden orada "bakıyorum" denmez (kota harcanmaz).
 function startWatching() {
   clearInterval(watchTimer);
   const ping = () => {
-    if (!document.hidden && client?.connected && state.pc === "online") client.publish(topic("app/watch"), "1");
+    if (!document.hidden && client?.connected && state.pc === "online" && state.view === "main") client.publish(topic("app/watch"), "1");
   };
   ping();
   watchTimer = setInterval(ping, 8000);
@@ -431,6 +435,7 @@ $("#btn-settings").addEventListener("click", async () => {
 
 // ------------------------------------------------------------------ Kurulum
 function showSetup(error = "") {
+  if (typeof setView === "function") setView("main", true);
   $("#app").classList.add("hidden");
   $("#setup").classList.remove("hidden");
   $("#setup-error").textContent = error;
