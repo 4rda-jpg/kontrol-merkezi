@@ -457,4 +457,9 @@ if (settings?.host) {
   showSetup();
 }
 
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+if ("serviceWorker" in navigator) {
+  // Yeni sürüm devreye girince sayfayı bir kez yenile (eski sayfa yeni kodla karışmasın)
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (hadController) location.reload(); });
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
