@@ -1,0 +1,17 @@
+{
+  "name": "Kontrol Merkezi",
+  "short_name": "Kontrol",
+  "description": "Bilgisayarını her yerden aç, kapat ve kontrol et",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0c11",
+  "theme_color": "#0a0c11",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0a0c11">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kontrol">
+  <title>Kontrol Merkezi</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" href="icons/favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+      <symbol id="i-mem" viewBox="0 0 24 24"><path d="M6 19v-3M10 19v-3M14 19v-3M18 19v-3"/><rect x="2" y="6" width="20" height="10" rx="2"/><path d="M7 10h.01M12 10h.01M17 10h.01"/></symbol>
+      <symbol id="i-gpu" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="2"/><circle cx="9" cy="12.5" r="2.5"/><circle cx="16" cy="12.5" r="2.5"/><path d="M5 18v3M2 4h3v3"/></symbol>
+      <symbol id="i-net" viewBox="0 0 24 24"><path d="M7 3v14M3 13l4 4 4-4M17 21V7M21 11l-4-4-4 4"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" fill="currentColor"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/></symbol>
+      <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 4.5v15l10-7.5z" fill="currentColor"/><path d="M19 5v14"/></symbol>
+      <symbol id="i-prev" viewBox="0 0 24 24"><path d="M19 4.5v15L9 12z" fill="currentColor"/><path d="M5 5v14"/></symbol>
+      <symbol id="i-vol" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></symbol>
+      <symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+      <symbol id="i-restart" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></symbol>
+      <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+      <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+      <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+      <symbol id="i-gamepad" viewBox="0 0 24 24"><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/><rect x="2" y="6" width="20" height="12" rx="4"/></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/></symbol>
+      <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+      <symbol id="i-calculator" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M16 14v4M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></symbol>
+      <symbol id="i-app" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></symbol>
+      <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+      <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- İlk kurulum: postane bilgileri -->
+  <section id="setup" class="setup hidden">
+    <form id="setup-form" class="setup-card" autocomplete="on">
+      <img class="logo" src="icons/icon-192.png" alt="">
+      <h1>Kontrol Merkezi</h1>
+      <p>Bilgisayarına bağlanmak için EMQX bilgilerini bir kez gir. Sadece bu telefonda saklanır.</p>
+      <label>Sunucu adresi<input id="f-host" placeholder="xxxx.ala.eu-central-1.emqxsl.com" autocapitalize="off" autocorrect="off" spellcheck="false" required></label>
+      <label>Kullanıcı adı<input id="f-user" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="username" required></label>
+      <label>Şifre<input id="f-pass" type="password" autocomplete="current-password" required></label>
+      <details>
+        <summary>Gelişmiş</summary>
+        <label>WebSocket portu<input id="f-port" value="8084" inputmode="numeric"></label>
+        <label>Kanal öneki<input id="f-topic" value="km" autocapitalize="off" autocorrect="off" spellcheck="false"></label>
+      </details>
+      <button class="btn primary" type="submit">Bağlan</button>
+      <span id="setup-error" class="error"></span>
+    </form>
+  </section>
+
+  <main id="app" class="app hidden">
+    <header class="top">
+      <div>
+        <p class="greeting" id="greeting">Merhaba</p>
+        <h1 id="hostname">Bilgisayarım</h1>
+      </div>
+      <button class="icon-btn" id="btn-settings" aria-label="Ayarlar"><svg><use href="#i-gear"/></svg></button>
+    </header>
+
+    <div class="links">
+      <span class="link" id="link-broker"><i></i>Sunucu</span>
+      <span class="link" id="link-esp"><i></i>Kumanda</span>
+      <span class="link" id="link-pc"><i></i>Bilgisayar</span>
+    </div>
+
+    <!-- Güç durumu -->
+    <section class="card hero" id="hero" data-state="unknown">
+      <div class="orb"><div class="orb-ring"></div><svg><use href="#i-power"/></svg></div>
+      <div class="hero-text">
+        <h2 id="hero-title">Bağlanıyor…</h2>
+        <p id="hero-sub">Sunucuya bağlanılıyor</p>
+      </div>
+      <button class="btn primary wake hidden" id="btn-wake"><svg><use href="#i-power"/></svg>Bilgisayarı Aç</button>
+    </section>
+
+    <div id="online-only" class="hidden">
+      <!-- İstatistikler -->
+      <div class="stats">
+        <section class="card stat" data-accent="violet">
+          <div class="stat-head"><svg><use href="#i-cpu"/></svg>İşlemci</div>
+          <div class="big"><span id="cpu-val">0</span><small>%</small></div>
+          <canvas class="spark" id="cpu-spark"></canvas>
+        </section>
+        <section class="card stat" data-accent="cyan">
+          <div class="stat-head"><svg><use href="#i-mem"/></svg>Bellek</div>
+          <div class="big"><span id="mem-val">0</span><small>%</small></div>
+          <div class="meter"><i id="mem-bar"></i></div>
+          <span class="meta" id="mem-sub"></span>
+        </section>
+        <section class="card stat" data-accent="green">
+          <div class="stat-head"><svg><use href="#i-gpu"/></svg>Ekran Kartı</div>
+          <div class="big"><span id="gpu-val">—</span><small>%</small></div>
+          <div class="meter"><i id="gpu-bar"></i></div>
+          <span class="meta" id="gpu-sub"></span>
+        </section>
+        <section class="card stat" data-accent="amber">
+          <div class="stat-head"><svg><use href="#i-net"/></svg>Ağ</div>
+          <div class="net"><span class="down" id="net-down">0 B/s</span><span class="up" id="net-up">0 B/s</span></div>
+          <canvas class="spark" id="net-spark"></canvas>
+        </section>
+      </div>
+
+      <!-- Medya -->
+      <section class="card media" id="media-card">
+        <div class="media-bg" id="media-bg"></div>
+        <div class="media-body">
+          <div class="art" id="media-art"><svg><use href="#i-music"/></svg></div>
+          <div class="media-info">
+            <span class="media-app" id="media-app">Medya</span>
+            <h3 id="media-title">Şu an bir şey çalmıyor</h3>
+            <p id="media-artist">—</p>
+          </div>
+        </div>
+        <div class="progress"><div class="bar" id="media-bar"></div></div>
+        <div class="controls">
+          <button class="ctrl" data-media="prev" aria-label="Önceki"><svg><use href="#i-prev"/></svg></button>
+          <button class="ctrl play" data-media="toggle" aria-label="Oynat/Duraklat"><svg><use href="#i-play" id="play-icon"/></svg></button>
+          <button class="ctrl" data-media="next" aria-label="Sonraki"><svg><use href="#i-next"/></svg></button>
+        </div>
+        <div class="volume">
+          <button class="ctrl small" id="mute-btn" aria-label="Sesi kapat/aç"><svg><use href="#i-vol" id="vol-icon"/></svg></button>
+          <input type="range" min="0" max="100" value="50" id="volume" aria-label="Ses seviyesi">
+          <span class="vol-val" id="vol-val">50</span>
+        </div>
+      </section>
+
+      <!-- Güç işlemleri -->
+      <section class="card">
+        <h2 class="card-title"><svg><use href="#i-zap"/></svg>Hızlı İşlemler</h2>
+        <div class="power">
+          <button class="pbtn" data-power="lock"><svg><use href="#i-lock"/></svg>Kilitle</button>
+          <button class="pbtn" data-power="sleep"><svg><use href="#i-moon"/></svg>Uyku</button>
+          <button class="pbtn warn" data-power="restart"><svg><use href="#i-restart"/></svg>Yeniden başlat</button>
+          <button class="pbtn danger" data-power="shutdown"><svg><use href="#i-power"/></svg>Kapat</button>
+        </div>
+      </section>
+
+      <!-- Uygulamalar -->
+      <section class="card">
+        <h2 class="card-title"><svg><use href="#i-app"/></svg>Uygulamaları Aç</h2>
+        <div class="apps" id="apps"></div>
+      </section>
+
+      <!-- Süreçler -->
+      <section class="card">
+        <h2 class="card-title"><svg><use href="#i-list"/></svg>En Çok Kaynak Kullananlar</h2>
+        <div id="procs" class="procs"></div>
+      </section>
+
+      <p class="foot" id="uptime"></p>
+    </div>
+  </main>
+
+  <!-- Alt sayfa (onay / ayarlar) -->
+  <div id="sheet" class="sheet hidden">
+    <div class="sheet-card">
+      <div class="grabber"></div>
+      <h3 id="sheet-title"></h3>
+      <p id="sheet-text"></p>
+      <div class="sheet-actions">
+        <button class="btn" id="sheet-ok">Onayla</button>
+        <button class="btn ghost" id="sheet-cancel">Vazgeç</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toasts" class="toasts"></div>
+
+  <script src="vendor/mqtt.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
