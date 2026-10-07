@@ -52,7 +52,7 @@ function renderDeck() {
   $("#deck-tabs").classList.toggle("single", pages.length < 2 && !deck.editing);
   pagesEl.innerHTML = pages.map((p) =>
     `<div class="deck-page">${Array.from({ length: SLOTS }, (_, i) => keyHtml(p.buttons[i], i)).join("")}</div>`).join("");
-  pagesEl.scrollLeft = deck.page * pagesEl.clientWidth;
+  sizeDeck();
   markTab();
   renderDeckBar();
 }
@@ -121,7 +121,16 @@ const landscape = matchMedia("(orientation: landscape)");
 landscape.addEventListener("change", (e) => {
   if (!$("#app").classList.contains("hidden")) setView(e.matches ? "deck" : "main");
 });
-addEventListener("resize", () => { pagesEl.scrollLeft = deck.page * pagesEl.clientWidth; });
+// Düğme boyu: alana sığan en büyük kare (style.css'teki --cols/--rows/--gap ile aynı değerler)
+function sizeDeck() {
+  const w = pagesEl.clientWidth, h = pagesEl.clientHeight;
+  if (!w || !h) return;
+  const [cols, rows] = landscape.matches ? [5, 3] : [3, 5], gap = 14;
+  const cell = Math.floor(Math.min((w - (cols - 1) * gap) / cols, (h - (rows - 1) * gap) / rows));
+  pagesEl.style.setProperty("--cell", `${Math.max(40, cell)}px`);
+  pagesEl.scrollLeft = deck.page * w;
+}
+new ResizeObserver(sizeDeck).observe(pagesEl);
 
 $("#btn-deck").addEventListener("click", () => setView("deck"));
 $("#deck-back").addEventListener("click", () => setView("main"));
@@ -225,6 +234,7 @@ addEventListener("pointermove", (e) => {
     d.ghost = d.key.cloneNode(true);
     d.ghost.classList.add("ghost");
     Object.assign(d.ghost.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px` });
+    d.ghost.style.setProperty("--cell", `${r.width}px`);
     document.body.append(d.ghost);
     d.key.classList.add("lifted");
   }

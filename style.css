@@ -286,27 +286,26 @@ body.deck-open #deck { display: flex; }
 .deck-tab.drop { background: rgba(157,184,255,.25); color: var(--text); }
 .deck-bar .link { flex-shrink: 0; font-variant-numeric: tabular-nums; max-width: 34vw; overflow: hidden; white-space: nowrap; }
 
-.deck-pages { flex: 1; min-height: 0; container-type: size; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; transition: opacity .3s; }
+.deck-pages { flex: 1; min-height: 0; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; transition: opacity .3s; }
 .deck-pages::-webkit-scrollbar { display: none; }
 .deck.editing .deck-pages { overflow-x: hidden; }
 .deck:not([data-pc="on"]) .deck-pages { opacity: .3; pointer-events: none; }
 .deck.editing .deck-pages { opacity: 1; pointer-events: auto; }
-/* Hücreler kare: alana sığan en büyük boy seçilir, düğmeler ortada toplanır */
+/* Hücreler kare: --cell'i deck.js alana sığan en büyük boy olarak hesaplar (iOS 15'te
+   container query olmadığı için CSS'te hesaplanamıyor); düğmeler ortada toplanır */
 .deck-page {
   --cols: 3; --rows: 5; --gap: 14px;
-  --cell: min(calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols)), calc((100cqh - (var(--rows) - 1) * var(--gap)) / var(--rows)));
   flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always;
-  display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-template-rows: repeat(var(--rows), var(--cell));
+  display: grid; grid-template-columns: repeat(var(--cols), var(--cell, 80px)); grid-template-rows: repeat(var(--rows), var(--cell, 80px));
   gap: var(--gap); justify-content: center; align-content: center;
 }
 @media (orientation: landscape) { .deck-page { --cols: 5; --rows: 3; } }
 .deck-msg { position: absolute; left: 24px; right: 24px; top: 50%; transform: translateY(-50%); text-align: center; color: var(--muted); font-size: 16px; pointer-events: none; }
 
-/* Her yuva kendi boyutunu bilir; düğme yuvaya sığan en büyük kare olur */
-.slot { container-type: size; min-width: 0; min-height: 0; display: grid; place-items: center; }
+.slot { min-width: 0; min-height: 0; display: grid; place-items: center; }
 .key {
   --c: var(--text);
-  position: relative; width: min(100cqw, 100cqh); height: min(100cqw, 100cqh); border-radius: 22%;
+  position: relative; width: var(--cell, 80px); height: var(--cell, 80px); border-radius: 22%;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7%;
   color: var(--c);
   background: linear-gradient(160deg, rgba(255,255,255,.15), rgba(255,255,255,.04));
@@ -314,8 +313,8 @@ body.deck-open #deck { display: flex; }
   transition: transform .2s var(--ease), background .2s, box-shadow .35s;
 }
 .key svg { width: 34%; height: 34%; }
-.k-letter { font-family: var(--font-display); font-size: min(30cqw, 30cqh); font-weight: 600; line-height: 1; }
-.k-label { max-width: 88%; font-size: clamp(9.5px, min(10cqw, 10cqh), 13px); font-weight: 500; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.k-letter { font-family: var(--font-display); font-size: calc(var(--cell, 80px) * .3); font-weight: 600; line-height: 1; }
+.k-label { max-width: 88%; font-size: clamp(9.5px, calc(var(--cell, 80px) * .1), 13px); font-weight: 500; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .key:active, .key.fire { transform: scale(.92); background: linear-gradient(160deg, rgba(255,255,255,.24), rgba(255,255,255,.08)); }
 .key.fire { transition-duration: .08s; }
 .key.ok { box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 0 0 2px var(--c), 0 0 26px -6px var(--c); }
@@ -361,7 +360,7 @@ body.deck-open #deck { display: flex; }
 .grow { flex: 1; }
 
 .de-top { display: flex; gap: 14px; align-items: flex-end; }
-.de-preview { width: 76px; height: 76px; flex-shrink: 0; container-type: size; display: grid; place-items: center; }
+.de-preview { --cell: 76px; width: 76px; height: 76px; flex-shrink: 0; display: grid; place-items: center; }
 .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 6px; }
 .ic-opt { height: 42px; border-radius: 12px; display: grid; place-items: center; color: var(--muted); font-size: 13px; font-weight: 600; background: rgba(255,255,255,.04); }
 .ic-opt svg { width: 19px; height: 19px; }
